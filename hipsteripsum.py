@@ -128,15 +128,15 @@ class HipsterIpsumAPICall(threading.Thread):
 
     def run(self):
         params = {"paras": self.paragraphs, "type": self.ipsumType, "html": self.useHTML}
-        
+
         try:
             r = requests.get("http://hipsterjesus.com/api/", params=params)
         except Exception as e:
             err("Exception: %s" % e)
             self.result = False
-
-        data = r.json()
-        self.result = data["text"]
+        else:
+          data = r.json()
+          self.result = data["text"]
 
 class HipsterIpsumReplaceCommand(sublime_plugin.TextCommand):
     def run(self, edit, begin, end, data):
