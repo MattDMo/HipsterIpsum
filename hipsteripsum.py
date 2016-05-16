@@ -1,8 +1,7 @@
 import sublime
 import sublime_plugin
 import threading
-import urllib
-import json
+
 if int(sublime.version()) >= 3000:
     from . import requests
 else:
