@@ -1,6 +1,6 @@
 [
     {
-        "keys": ["ctrl+alt+h"],
+        "keys": ["ctrl+alt+shift+h"],
         "command": "hipster_ipsum"
     },
     {
