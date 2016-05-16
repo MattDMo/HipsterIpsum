@@ -15,9 +15,9 @@ Select a number from 1 to 99 and press Ctrl+Alt+H, and 1 to 99 pop-up paragraphs
 
 Configuration
 -------------
-* **"paragraphs":** A sustainable number of paragraphs to insert by default.
-* **"ipsum_type":** Set to "hipster-centric" for single-origin hipster text and "hipster-latin" for hipster text with a Latinate mustache.
-* **"html":** Should the text be pickled in `<p>` tags?
+* `"paragraphs":` A sustainable number of paragraphs to insert by default.
+* `"ipsum_type":` Set to "hipster-centric" for single-origin hipster text and "hipster-latin" for hipster text with a Latinate mustache.
+* `"html":` Should the text be pickled in `<p>` tags?
 
 
 Cred
