@@ -80,8 +80,10 @@ class HipsterIpsumCommand(sublime_plugin.TextCommand):
             if thread.is_alive():
                 next_threads.append(thread)
                 continue
+
             if thread.result == False:
                 continue
+
             offset = self.replace(thread, offset)
         theThreads = next_threads
 
