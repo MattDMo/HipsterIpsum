@@ -8,75 +8,75 @@ else:
     import requests
 
 
-def err(theError):
-    print("[Hipster Ipsum: " + theError + "]")
+def error(err):
+    print("[Hipster Ipsum: " + err + "]")
 
 
 class HipsterIpsumCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         s = sublime.load_settings("Hipster Ipsum.sublime-settings")
-        defaultParas = s.get("paragraphs", 1)
-        ipsumType = s.get("ipsum_type", "hipster-centric")
-        useHTML = "false" if s.get("html", False) == False else "true"
+        default_paras = s.get("paragraphs", 1)
+        ipsum_type = s.get("ipsum_type", "hipster-centric")
+        use_HTML = "false" if s.get("html", False) == False else "true"
 
         selections = self.view.sel()
-        threads = []
-        passedThreads = 0
-        skippedThreads = 0
+        all_threads = []
+        passed_threads = 0
+        skipped_threads = 0
 
-        for theSelection in selections:
-            theSubstring = self.view.substr(theSelection)
-            if len(theSubstring) == 0:
-                newThread = HipsterIpsumAPICall(theSelection, defaultParas,
-                                                ipsumType, useHTML, "")
-                threads.append(newThread)
-                newThread.start()
-                passedThreads += 1
+        for sel in selections:
+            substring = self.view.substr(sel)
+            if len(substring) == 0:
+                new_thread = HipsterIpsumAPICall(sel, default_paras,
+                                                ipsum_type, use_HTML, "")
+                all_threads.append(new_thread)
+                new_thread.start()
+                passed_threads += 1
 
             else:
                 try:
-                    parasHere = int(theSubstring)
+                    paras = int(substring)
 
                 except ValueError:
-                    newThread = HipsterIpsumAPICall(theSelection, defaultParas,
-                                                    ipsumType, useHTML, theSubstring)
-                    threads.append(newThread)
-                    newThread.start()
-                    passedThreads += 1
+                    new_thread = HipsterIpsumAPICall(sel, default_paras,
+                                                    ipsum_type, use_HTML, substring)
+                    all_threads.append(new_thread)
+                    new_thread.start()
+                    passed_threads += 1
 
                 else:
-                    if parasHere < 1:
-                        err("%i is too few paragraphs." % parasHere)
-                        err("Select a number between 1 and 99.")
+                    if paras < 1:
+                        error("%i is too few paragraphs." % paras)
+                        error("Select a number between 1 and 99.")
                         sublime.status_message("Hipster Ipsum: Too few paragraphs (%i)."
-                                               % parasHere)
-                        skippedThreads += 1
+                                               % paras)
+                        skipped_threads += 1
 
-                    elif parasHere > 99:
-                        err("%i is too many paragraphs." % parasHere)
-                        err("Select a number between 1 and 99.")
+                    elif paras > 99:
+                        error("%i is too many paragraphs." % paras)
+                        error("Select a number between 1 and 99.")
                         sublime.status_message("Hipster Ipsum: Too many paragraphs (%i)."
-                                               % parasHere)
-                        skippedThreads += 1
+                                               % paras)
+                        skipped_threads += 1
 
                     else:
-                        newThread = HipsterIpsumAPICall(theSelection, parasHere,
-                                                        ipsumType, useHTML, theSubstring)
-                        threads.append(newThread)
-                        newThread.start()
-                        passedThreads += 1
+                        new_thread = HipsterIpsumAPICall(sel, paras,
+                                                         ipsum_type, use_HTML, substring)
+                        all_threads.append(new_thread)
+                        new_thread.start()
+                        passed_threads += 1
 
-        if passedThreads > 0:
+        if passed_threads > 0:
             self.view.sel().clear()
-            self.manageThreads(threads)
+            self.manage_threads(all_threads)
 
         else:
             sublime.status_message("Hipster Ipsum: No authentic selections.")
-            err("Skipped %i selections." % skippedThreads)
+            error("Skipped %i selections." % skipped_threads)
 
-    def manageThreads(self, theThreads, offset=0, i=0, direction=1):
+    def manage_threads(self, threads, offset=0, i=0, direction=1):
         next_threads = []
-        for thread in theThreads:
+        for thread in threads:
             if thread.is_alive():
                 next_threads.append(thread)
                 continue
@@ -85,9 +85,9 @@ class HipsterIpsumCommand(sublime_plugin.TextCommand):
                 continue
 
             offset = self.replace(thread, offset)
-        theThreads = next_threads
+        threads = next_threads
 
-        if len(theThreads):
+        if len(threads):
             before = i % 8
             after = 7 - before
             if not after:
@@ -100,7 +100,7 @@ class HipsterIpsumCommand(sublime_plugin.TextCommand):
             self.view.set_status("hipster_ipsum",
                                  "Gentrifying... [%s=%s]" % (" " * before, " " * after))
 
-            sublime.set_timeout(lambda: self.manageThreads(theThreads, offset,
+            sublime.set_timeout(lambda: self.manage_threads(threads, offset,
                                                            i, direction), 100)
             return
 
@@ -109,10 +109,10 @@ class HipsterIpsumCommand(sublime_plugin.TextCommand):
         sublime.status_message("%s area%s gentrified." % (selections,
                                                           '' if selections == 1 else 's'))
 
-    def replace(self, theThread, offset):
-        selection = theThread.selection
-        original = theThread.original
-        result = theThread.result
+    def replace(self, thread, offset):
+        selection = thread.selection
+        original = thread.original
+        result = thread.result
 
         if offset:
             selection = sublime.Region(selection.begin() + offset, selection.end() + offset)
@@ -140,23 +140,23 @@ class HipsterIpsumCommand(sublime_plugin.TextCommand):
 
 
 class HipsterIpsumAPICall(threading.Thread):
-    def __init__(self, theSelection, numParagraphs, ipsumType, useHTML, originalString):
-        self.selection = theSelection
-        self.paragraphs = numParagraphs
-        self.ipsumType = ipsumType
-        self.useHTML = useHTML
-        self.original = originalString
+    def __init__(self, sel, num_paras, ipsum_type, use_HTML, orig_str):
+        self.selection = sel
+        self.paragraphs = num_paras
+        self.ipsum_type = ipsum_type
+        self.use_HTML = use_HTML
+        self.original = orig_str
         self.result = None
         threading.Thread.__init__(self)
 
     def run(self):
-        params = {"paras": self.paragraphs, "type": self.ipsumType, "html": self.useHTML}
+        params = {"paras": self.paragraphs, "type": self.ipsum_type, "html": self.use_HTML}
 
         try:
             r = requests.get("http://hipsterjesus.com/api/", params=params)
 
         except Exception as e:
-            err("Exception: %s" % e)
+            error("Exception: %s" % e)
             self.result = False
 
         else:
