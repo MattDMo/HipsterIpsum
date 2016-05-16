@@ -1,7 +1,7 @@
 {
 	// If the command is called without text selected,
 	// how many paragraphs should it forage for?
-	"paragraphs": 2,
+	"paragraphs": 1,
 
 	// Possible values are "hipster-centric" for single-origin
 	// hipster text and "hipster-latin" for hipster text with
