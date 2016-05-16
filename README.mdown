@@ -22,7 +22,7 @@ Configuration
 
 Cred
 ----
-Thanks to [Will Bond](http://wbond.net) for his [tutorial on creating a Sublime Text 2 plugin](http://net.tutsplus.com/tutorials/python-tutorials/how-to-create-a-sublime-text-2-plugin/), which offered some next-level solutions to a few difficulties. Thanks as well to the [requests](http://docs.python-requests.org/en/latest/) library, the sustainable biodiesel motor behind the farm-to-table HTTP.
+Thanks to [Will Bond](http://wbond.net) for his [tutorial on creating a Sublime Text 2 plugin](http://net.tutsplus.com/tutorials/python-tutorials/how-to-create-a-sublime-text-2-plugin/), which offered some next-level solutions to a few difficulties. Thanks as well to the [`requests`](http://docs.python-requests.org/en/latest/) library, the sustainable biodiesel motor behind the farm-to-table HTTP.
 
 
 Cosby Sweater
